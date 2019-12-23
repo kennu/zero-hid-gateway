@@ -11,7 +11,7 @@ class HIDGatewayRequestHandler(BaseHTTPRequestHandler):
 
 
 def main():
-  print('Zero HID Gateway by Kenneth Falck <kennu@iki.fi> 2019')
+  print('Zero HID Gateway by Kenneth Falck <kennu@iki.fi> 2019', flush=True)
   server_address = ('0.0.0.0', 8088)
   server = HTTPServer(server_address, HIDGatewayRequestHandler)
   server.serve_forever()

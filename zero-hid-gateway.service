@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/usr/local/zero-hid-gateway
-ExecStart=/usr/local/zero-hid-gateway/zero-hid-gateway.py
+WorkingDirectory=/tmp
+ExecStart=/usr/local/bin/zero-hid-gateway.py
 Restart=on-failure
 
 [Install]
