@@ -1,0 +1,13 @@
+[Unit]
+Description=Raspberry Pi Zero HID Gateway
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/local/zero-hid-gateway
+ExecStart=/usr/local/zero-hid-gateway/zero-hid-gateway.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
