@@ -4,6 +4,7 @@ from urllib.parse import urlparse, parse_qs
 import pathlib
 import os
 import time
+import json
 
 SYS_DEVICE_PATH = '/sys/kernel/config/usb_gadget/zerohidgateway'
 SYS_STRINGS_PATH = '%s/strings/0x409' % (SYS_DEVICE_PATH)
@@ -32,8 +33,80 @@ HID_REPORT_DESC = b'\x05\x01\x09\x06\xa1\x01\x05\x07\x19\xe0\x29\xe7\x15\x00\x25
                   b'\x05\x08\x19\x01\x29\x05\x91\x02\x95\x01\x75\x03\x91\x03\x95\x06' +\
                   b'\x75\x08\x15\x00\x25\x65\x05\x07\x19\x00\x29\x65\x81\x00\xc0'
 
-DEFAULT_KEY_DOWNTIME_MS = 300 # time a key is held down while typing (ms)
-DEFAULT_KEY_INTERVAL_MS = 300 # time between keypresses while typing (ms)
+DEFAULT_KEY_DOWNTIME_MS = 50 # time a key is held down while typing (ms)
+DEFAULT_KEY_INTERVAL_MS = 50 # time between keypresses while typing (ms)
+
+# Source for codes: https://github.com/girst/hardpass-sendHID/blob/master/scancodes.c
+KEY_SCAN_CODES = {
+    # With shift
+    'A': b'\x04\x02',
+    'B': b'\x05\x02',
+    'C': b'\x06\x02',
+    'D': b'\x07\x02',
+    'E': b'\x08\x02',
+    'F': b'\x09\x02',
+    'G': b'\x0a\x02',
+    'H': b'\x0b\x02',
+    'I': b'\x0c\x02',
+    'J': b'\x0d\x02',
+    'K': b'\x0e\x02',
+    'L': b'\x0f\x02',
+    'M': b'\x10\x02',
+    'N': b'\x11\x02',
+    'O': b'\x12\x02',
+    'P': b'\x13\x02',
+    'Q': b'\x14\x02',
+    'R': b'\x15\x02',
+    'S': b'\x16\x02',
+    'T': b'\x17\x02',
+    'U': b'\x18\x02',
+    'V': b'\x19\x02',
+    'W': b'\x1a\x02',
+    'X': b'\x1b\x02',
+    'Y': b'\x1c\x02',
+    'Z': b'\x1d\x02',
+    # Without shift
+    'a': b'\x04\x00',
+    'b': b'\x05\x00',
+    'c': b'\x06\x00',
+    'd': b'\x07\x00',
+    'e': b'\x08\x00',
+    'f': b'\x09\x00',
+    'g': b'\x0a\x00',
+    'h': b'\x0b\x00',
+    'i': b'\x0c\x00',
+    'j': b'\x0d\x00',
+    'k': b'\x0e\x00',
+    'l': b'\x0f\x00',
+    'm': b'\x10\x00',
+    'n': b'\x11\x00',
+    'o': b'\x12\x00',
+    'p': b'\x13\x00',
+    'q': b'\x14\x00',
+    'r': b'\x15\x00',
+    's': b'\x16\x00',
+    't': b'\x17\x00',
+    'u': b'\x18\x00',
+    'v': b'\x19\x00',
+    'w': b'\x1a\x00',
+    'x': b'\x1b\x00',
+    'y': b'\x1c\x00',
+    'z': b'\x1d\x00',
+    # Numbers
+    '1': b'\x1e\x00',
+    '2': b'\x1f\x00',
+    '3': b'\x20\x00',
+    '4': b'\x21\x00',
+    '5': b'\x22\x00',
+    '6': b'\x23\x00',
+    '7': b'\x24\x00',
+    '8': b'\x25\x00',
+    '9': b'\x26\x00',
+    '0': b'\x27\x00',
+    # Control keys
+    '\n': b'\x28\x00', # enter
+    ' ': b'\x2c\x00' # space
+}
 
 # Initialize HID device, based on instructions at https://www.isticktoit.net/?p=1383
 def initialize_hid_device():
@@ -70,23 +143,31 @@ def initialize_hid_device():
     with open('%s/UDC' % (SYS_DEVICE_PATH), 'wb') as f: f.write(b'%s\n' % (bytes(' '.join(files), 'utf8')))
 
 def send_hid_key_down(key):
-    print('KEY DOWN %s' % (key), flush=True)
-    with open(DEV_HID_PATH, 'wb') as f: f.write(b'\x00\x00\x04\x00\x00\x00\x00\x00')
+    try:
+        (scancode, modifier) = KEY_SCAN_CODES[key]
+    except KeyError:
+        print('Skip unknown scancode for %s' % key)
+        return (-1, -1)
+    print('SCANCODE %x %x' % (scancode, modifier), flush=True)
+    with open(DEV_HID_PATH, 'wb') as f: f.write(b'%c\x00%c\x00\x00\x00\x00\x00' % (modifier, scancode))
+    return (scancode, modifier)
 
-def send_hid_key_up(key):
-    print('KEY UP %s' % (key), flush=True)
+def send_hid_key_up():
     with open(DEV_HID_PATH, 'wb') as f: f.write(b'\x00\x00\x00\x00\x00\x00\x00\x00')
 
 # Send specified keypresses, with each key held down for downtime seconds, with interval seconds between keypresses
 def send_hid_keypresses(text, downtime_ms, interval_ms):
     downtime_s = float(downtime_ms) / 1000
     interval_s = float(interval_ms) / 1000
-    for index, key in enumearte(text):
+    scancodes = []
+    for index, key in enumerate(text):
         if index > 0:
             time.sleep(interval_s)
-        send_hid_key_down(key)
+        scancode = send_hid_key_down(key)
+        scancodes.append(scancode)
         time.sleep(downtime_s)
-        send_hid_key_up(key)
+        send_hid_key_up()
+    return scancodes
 
 class HIDGatewayRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -109,24 +190,28 @@ class HIDGatewayRequestHandler(BaseHTTPRequestHandler):
 
     # Invoke a single keypress (down, up)
     def get_keypress(self, query):
-        key = bytes(''.join(query.get('key', [])), 'utf8')
+        # Use Unicode for key, it's mapped to bytes later
+        key = ''.join(query.get('key', []))
         downtime_ms = int(''.join(query.get('downtime', [str(DEFAULT_KEY_DOWNTIME_MS)])))
         interval_ms = int(''.join(query.get('interval', [str(DEFAULT_KEY_INTERVAL_MS)])))
-        print('get_keypress %s' % (query))
-        send_hid_keypresses(key, downtime_ms, interval_ms)
-        return '{}\n'
+        scancodes = send_hid_keypresses(key, downtime_ms, interval_ms)
+        return json.dumps({
+            'scancodes': scancodes,
+        }) + '\n'
 
     # Invoke multiple keypresses
     def get_type(self, query):
-        text = bytes(''.join(query.get('text', [])), 'utf8')
+        # Use Unicode for text, it's mapped to bytes later
+        text = ''.join(query.get('text', []))
         enter = False if ''.join(query.get('enter', [])) == '0' else True
         if enter:
-            text += b'\r'
+            text += '\n'
         downtime_ms = int(''.join(query.get('downtime', [str(DEFAULT_KEY_DOWNTIME_MS)])))
         interval_ms = int(''.join(query.get('interval', [str(DEFAULT_KEY_INTERVAL_MS)])))
-        print('get_type %s %s' % (text, enter))
-        send_hid_keypresses(text, downtime_ms, interval_ms)
-        return '{}\n'
+        scancodes = send_hid_keypresses(text, downtime_ms, interval_ms)
+        return json.dumps({
+            'scancodes': scancodes,
+        }) + '\n'
 
 def main():
     print('Zero HID Gateway by Kenneth Falck <kennu@iki.fi> 2019', flush=True)
