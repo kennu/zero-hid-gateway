@@ -11,12 +11,12 @@ you want to send keypresses to, to the Raspberry Pi Zero's USB port.
 
 ## REST API
 
-GET /keypress?key=x&downtime=n
+GET http://localhost:8088/keypress?key=x&downtime=n
 
 Use /keypress to emit a single keypress. Downtime specifies how long the key
 will be down before it is released. The default value for downtime is 50ms.
 
-GET /type?text=xxx&downtime=n&interval=n
+GET http://localhost:8088/type?text=xxx&downtime=n&interval=n
 
 Use /type to emit a sequence of keypresses. Downtime specifies how long keys
 are held down and interval specifies the delay between keypresses. The default
