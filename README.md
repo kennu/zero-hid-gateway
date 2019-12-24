@@ -6,7 +6,8 @@ Kenneth Falck <kennu@iki.fi> 2019
 The zero-hid-gateway works on Raspberry Pi Zero. It acts as a virtual USB HID
 device and provides a REST API for emitting keypresses.
 
-Currently the keycodes are mapped for TheC64.
+Currently the keycodes are mapped for TheC64, but you can connect any device
+you want to send keypresses to, to the Raspberry Pi Zero's USB port.
 
 ## REST API
 
