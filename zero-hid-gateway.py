@@ -37,6 +37,7 @@ DEFAULT_KEY_DOWNTIME_MS = 50 # time a key is held down while typing (ms)
 DEFAULT_KEY_INTERVAL_MS = 50 # time between keypresses while typing (ms)
 
 # Source for codes: https://github.com/girst/hardpass-sendHID/blob/master/scancodes.c
+# Modifiers: 0x01 Left Ctrl, 0x02 Left Shift, 0x04 Left Alt, 0x08 Left Meta, 0x10 Right Ctrl, 0x20 Right Shift, 0x40 Right Alt, 0x80 Right Meta
 KEY_SCAN_CODES = {
     # With shift
     'A': b'\x04\x02',
@@ -65,6 +66,7 @@ KEY_SCAN_CODES = {
     'X': b'\x1b\x02',
     'Y': b'\x1c\x02',
     'Z': b'\x1d\x02',
+
     # Without shift
     'a': b'\x04\x00',
     'b': b'\x05\x00',
@@ -92,6 +94,7 @@ KEY_SCAN_CODES = {
     'x': b'\x1b\x00',
     'y': b'\x1c\x00',
     'z': b'\x1d\x00',
+
     # Numbers
     '1': b'\x1e\x00',
     '2': b'\x1f\x00',
@@ -103,9 +106,46 @@ KEY_SCAN_CODES = {
     '8': b'\x25\x00',
     '9': b'\x26\x00',
     '0': b'\x27\x00',
+
+    # Special keys above numbers (C-64)
+    '!': b'\x1e\x02',
+    '"': b'\x1f\x02',
+    '#': b'\x20\x02',
+    '$': b'\x21\x02',
+    '%': b'\x22\x02',
+    '&': b'\x23\x02',
+    '\'': b'\x24\x02',
+    '(': b'\x25\x02',
+    ')': b'\x26\x02',
+
     # Control keys
     '\n': b'\x28\x00', # enter
-    ' ': b'\x2c\x00' # space
+    '\x1b': b'\x29\x00', # escape
+    '\b': b'\x2a\x00', # backspace
+    '\t': b'\x2b\x00', # tab
+    ' ': b'\x2c\x00', # space
+
+    # Graphics keys
+
+    # Other special keys (C-64)
+    '=': b'\x2e\x00',
+    ':': b'\x2f\x00',
+    ';': b'\x30\x00',
+    '@': b'\x31\x00',
+    #'@': b'\x32\x00', # same as 31
+    '*': b'\x33\x00',
+    #'': b'\x34\x00', # arrow up
+    #'': b'\x35\x00', # arrow left
+    ',': b'\x36\x00',
+    '.': b'\x37\x00',
+    '/': b'\x38\x00',
+    '[': b'\x2f\x20', # with shift
+    ']': b'\x30\x20', # with shift
+    '<': b'\x36\x20', # with shift
+    '>': b'\x37\x20', # with shift
+    '?': b'\x38\x20', # with shift
+    '+': b'\x57\x00', # keypad +
+    '-': b'\x56\x00', # keypad -
 }
 
 # Initialize HID device, based on instructions at https://www.isticktoit.net/?p=1383
@@ -172,6 +212,7 @@ def send_hid_keypresses(text, downtime_ms, interval_ms):
 class HIDGatewayRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
+        print('Parsed URL query', parsed_path.query)
         query = parse_qs(parsed_path.query)
         if parsed_path.path == '/keypress':
             self.send_response(200)
