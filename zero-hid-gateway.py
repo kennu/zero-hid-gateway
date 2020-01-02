@@ -37,6 +37,7 @@ DEFAULT_KEY_DOWNTIME_MS = 50 # time a key is held down while typing (ms)
 DEFAULT_KEY_INTERVAL_MS = 50 # time between keypresses while typing (ms)
 
 # Source for codes: https://github.com/girst/hardpass-sendHID/blob/master/scancodes.c
+# Another source: https://www.usb.org/sites/default/files/documents/hut1_12v2.pdf
 # Modifiers: 0x01 Left Ctrl, 0x02 Left Shift, 0x04 Left Alt, 0x08 Left Meta, 0x10 Right Ctrl, 0x20 Right Shift, 0x40 Right Alt, 0x80 Right Meta
 KEY_SCAN_CODES = {
     'thec64-mini-uk': {
@@ -144,7 +145,7 @@ KEY_SCAN_CODES = {
         '>': b'\x37\x20', # with shift
         '?': b'\x38\x20', # with shift
         #'': b'\x35\x00', # arrow left
-        '+': b'\x3d\x00', #XXX
+        '+': b'\x2e\x20',
         '-': b'\x2d\x00',
     },
     'thec64': {
