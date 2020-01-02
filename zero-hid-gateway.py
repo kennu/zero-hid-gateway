@@ -39,114 +39,226 @@ DEFAULT_KEY_INTERVAL_MS = 50 # time between keypresses while typing (ms)
 # Source for codes: https://github.com/girst/hardpass-sendHID/blob/master/scancodes.c
 # Modifiers: 0x01 Left Ctrl, 0x02 Left Shift, 0x04 Left Alt, 0x08 Left Meta, 0x10 Right Ctrl, 0x20 Right Shift, 0x40 Right Alt, 0x80 Right Meta
 KEY_SCAN_CODES = {
-    # With shift
-    'A': b'\x04\x02',
-    'B': b'\x05\x02',
-    'C': b'\x06\x02',
-    'D': b'\x07\x02',
-    'E': b'\x08\x02',
-    'F': b'\x09\x02',
-    'G': b'\x0a\x02',
-    'H': b'\x0b\x02',
-    'I': b'\x0c\x02',
-    'J': b'\x0d\x02',
-    'K': b'\x0e\x02',
-    'L': b'\x0f\x02',
-    'M': b'\x10\x02',
-    'N': b'\x11\x02',
-    'O': b'\x12\x02',
-    'P': b'\x13\x02',
-    'Q': b'\x14\x02',
-    'R': b'\x15\x02',
-    'S': b'\x16\x02',
-    'T': b'\x17\x02',
-    'U': b'\x18\x02',
-    'V': b'\x19\x02',
-    'W': b'\x1a\x02',
-    'X': b'\x1b\x02',
-    'Y': b'\x1c\x02',
-    'Z': b'\x1d\x02',
+    'thec64-mini-uk': {
+        # With shift
+        'A': b'\x04\x02',
+        'B': b'\x05\x02',
+        'C': b'\x06\x02',
+        'D': b'\x07\x02',
+        'E': b'\x08\x02',
+        'F': b'\x09\x02',
+        'G': b'\x0a\x02',
+        'H': b'\x0b\x02',
+        'I': b'\x0c\x02',
+        'J': b'\x0d\x02',
+        'K': b'\x0e\x02',
+        'L': b'\x0f\x02',
+        'M': b'\x10\x02',
+        'N': b'\x11\x02',
+        'O': b'\x12\x02',
+        'P': b'\x13\x02',
+        'Q': b'\x14\x02',
+        'R': b'\x15\x02',
+        'S': b'\x16\x02',
+        'T': b'\x17\x02',
+        'U': b'\x18\x02',
+        'V': b'\x19\x02',
+        'W': b'\x1a\x02',
+        'X': b'\x1b\x02',
+        'Y': b'\x1c\x02',
+        'Z': b'\x1d\x02',
+    
+        # Without shift
+        'a': b'\x04\x00',
+        'b': b'\x05\x00',
+        'c': b'\x06\x00',
+        'd': b'\x07\x00',
+        'e': b'\x08\x00',
+        'f': b'\x09\x00',
+        'g': b'\x0a\x00',
+        'h': b'\x0b\x00',
+        'i': b'\x0c\x00',
+        'j': b'\x0d\x00',
+        'k': b'\x0e\x00',
+        'l': b'\x0f\x00',
+        'm': b'\x10\x00',
+        'n': b'\x11\x00',
+        'o': b'\x12\x00',
+        'p': b'\x13\x00',
+        'q': b'\x14\x00',
+        'r': b'\x15\x00',
+        's': b'\x16\x00',
+        't': b'\x17\x00',
+        'u': b'\x18\x00',
+        'v': b'\x19\x00',
+        'w': b'\x1a\x00',
+        'x': b'\x1b\x00',
+        'y': b'\x1c\x00',
+        'z': b'\x1d\x00',
+    
+        # Numbers
+        '1': b'\x1e\x00',
+        '2': b'\x1f\x00',
+        '3': b'\x20\x00',
+        '4': b'\x21\x00',
+        '5': b'\x22\x00',
+        '6': b'\x23\x00',
+        '7': b'\x24\x00',
+        '8': b'\x25\x00',
+        '9': b'\x26\x00',
+        '0': b'\x27\x00',
+    
+        # Special keys above numbers (C-64)
+        '!': b'\x1e\x02',
+        '"': b'\x1f\x02',
+        '#': b'\x32\x00',
+        '$': b'\x21\x02',
+        '%': b'\x22\x02',
+        '&': b'\x24\x02',
+        #'': b'\x23\x02', # arrow up
+        '\'': b'\x34\x00',
+        '(': b'\x26\x02', 
+        ')': b'\x27\x02', 
+    
+        # Control keys
+        '\n': b'\x28\x00', # enter
+        '\x1b': b'\x29\x00', # escape
+        '\b': b'\x2a\x00', # backspace
+        '\t': b'\x2b\x00', # tab
+        ' ': b'\x2c\x00', # space
 
-    # Without shift
-    'a': b'\x04\x00',
-    'b': b'\x05\x00',
-    'c': b'\x06\x00',
-    'd': b'\x07\x00',
-    'e': b'\x08\x00',
-    'f': b'\x09\x00',
-    'g': b'\x0a\x00',
-    'h': b'\x0b\x00',
-    'i': b'\x0c\x00',
-    'j': b'\x0d\x00',
-    'k': b'\x0e\x00',
-    'l': b'\x0f\x00',
-    'm': b'\x10\x00',
-    'n': b'\x11\x00',
-    'o': b'\x12\x00',
-    'p': b'\x13\x00',
-    'q': b'\x14\x00',
-    'r': b'\x15\x00',
-    's': b'\x16\x00',
-    't': b'\x17\x00',
-    'u': b'\x18\x00',
-    'v': b'\x19\x00',
-    'w': b'\x1a\x00',
-    'x': b'\x1b\x00',
-    'y': b'\x1c\x00',
-    'z': b'\x1d\x00',
-
-    # Numbers
-    '1': b'\x1e\x00',
-    '2': b'\x1f\x00',
-    '3': b'\x20\x00',
-    '4': b'\x21\x00',
-    '5': b'\x22\x00',
-    '6': b'\x23\x00',
-    '7': b'\x24\x00',
-    '8': b'\x25\x00',
-    '9': b'\x26\x00',
-    '0': b'\x27\x00',
-
-    # Special keys above numbers (C-64)
-    '!': b'\x1e\x02',
-    '"': b'\x1f\x02',
-    '#': b'\x20\x02',
-    '$': b'\x21\x02',
-    '%': b'\x22\x02',
-    '&': b'\x23\x02',
-    '\'': b'\x24\x02',
-    '(': b'\x25\x02',
-    ')': b'\x26\x02',
-
-    # Control keys
-    '\n': b'\x28\x00', # enter
-    '\x1b': b'\x29\x00', # escape
-    '\b': b'\x2a\x00', # backspace
-    '\t': b'\x2b\x00', # tab
-    ' ': b'\x2c\x00', # space
-
-    # Graphics keys
-
-    # Other special keys (C-64)
-    '=': b'\x2e\x00',
-    ':': b'\x2f\x00',
-    ';': b'\x30\x00',
-    '@': b'\x31\x00',
-    #'@': b'\x32\x00', # same as 31
-    '*': b'\x33\x00',
-    #'': b'\x34\x00', # arrow up
-    #'': b'\x35\x00', # arrow left
-    ',': b'\x36\x00',
-    '.': b'\x37\x00',
-    '/': b'\x38\x00',
-    '[': b'\x2f\x20', # with shift
-    ']': b'\x30\x20', # with shift
-    '<': b'\x36\x20', # with shift
-    '>': b'\x37\x20', # with shift
-    '?': b'\x38\x20', # with shift
-    '+': b'\x57\x00', # keypad +
-    '-': b'\x56\x00', # keypad -
+        # Graphics keys
+    
+        # Other special keys (C-64)
+        '=': b'\x2e\x00',
+        ':': b'\x33\x20', # with shift
+        ';': b'\x33\x00',
+        '@': b'\x31\x00',
+        '*': b'\x25\x20', # with shift
+        ',': b'\x36\x00',
+        '.': b'\x37\x00',
+        '/': b'\x38\x00',
+        '[': b'\x2f\x00',
+        ']': b'\x30\x00',
+        '<': b'\x36\x20', # with shift
+        '>': b'\x37\x20', # with shift
+        '?': b'\x38\x20', # with shift
+        #'': b'\x35\x00', # arrow left
+        '+': b'\x3d\x00', #XXX
+        '-': b'\x2d\x00',
+    },
+    'thec64': {
+        # With shift
+        'A': b'\x04\x02',
+        'B': b'\x05\x02',
+        'C': b'\x06\x02',
+        'D': b'\x07\x02',
+        'E': b'\x08\x02',
+        'F': b'\x09\x02',
+        'G': b'\x0a\x02',
+        'H': b'\x0b\x02',
+        'I': b'\x0c\x02',
+        'J': b'\x0d\x02',
+        'K': b'\x0e\x02',
+        'L': b'\x0f\x02',
+        'M': b'\x10\x02',
+        'N': b'\x11\x02',
+        'O': b'\x12\x02',
+        'P': b'\x13\x02',
+        'Q': b'\x14\x02',
+        'R': b'\x15\x02',
+        'S': b'\x16\x02',
+        'T': b'\x17\x02',
+        'U': b'\x18\x02',
+        'V': b'\x19\x02',
+        'W': b'\x1a\x02',
+        'X': b'\x1b\x02',
+        'Y': b'\x1c\x02',
+        'Z': b'\x1d\x02',
+    
+        # Without shift
+        'a': b'\x04\x00',
+        'b': b'\x05\x00',
+        'c': b'\x06\x00',
+        'd': b'\x07\x00',
+        'e': b'\x08\x00',
+        'f': b'\x09\x00',
+        'g': b'\x0a\x00',
+        'h': b'\x0b\x00',
+        'i': b'\x0c\x00',
+        'j': b'\x0d\x00',
+        'k': b'\x0e\x00',
+        'l': b'\x0f\x00',
+        'm': b'\x10\x00',
+        'n': b'\x11\x00',
+        'o': b'\x12\x00',
+        'p': b'\x13\x00',
+        'q': b'\x14\x00',
+        'r': b'\x15\x00',
+        's': b'\x16\x00',
+        't': b'\x17\x00',
+        'u': b'\x18\x00',
+        'v': b'\x19\x00',
+        'w': b'\x1a\x00',
+        'x': b'\x1b\x00',
+        'y': b'\x1c\x00',
+        'z': b'\x1d\x00',
+    
+        # Numbers
+        '1': b'\x1e\x00',
+        '2': b'\x1f\x00',
+        '3': b'\x20\x00',
+        '4': b'\x21\x00',
+        '5': b'\x22\x00',
+        '6': b'\x23\x00',
+        '7': b'\x24\x00',
+        '8': b'\x25\x00',
+        '9': b'\x26\x00',
+        '0': b'\x27\x00',
+    
+        # Special keys above numbers (C-64)
+        '!': b'\x1e\x02',
+        '"': b'\x1f\x02',
+        '#': b'\x20\x02',
+        '$': b'\x21\x02',
+        '%': b'\x22\x02',
+        '&': b'\x23\x02',
+        '\'': b'\x24\x02',
+        '(': b'\x25\x02',
+        ')': b'\x26\x02',
+    
+        # Control keys
+        '\n': b'\x28\x00', # enter
+        '\x1b': b'\x29\x00', # escape
+        '\b': b'\x2a\x00', # backspace
+        '\t': b'\x2b\x00', # tab
+        ' ': b'\x2c\x00', # space
+    
+        # Graphics keys
+    
+        # Other special keys (C-64)
+        '=': b'\x2e\x00',
+        ':': b'\x2f\x00',
+        ';': b'\x30\x00',
+        '@': b'\x31\x00',
+        #'@': b'\x32\x00', # same as 31
+        '*': b'\x33\x00',
+        #'': b'\x34\x00', # arrow up
+        #'': b'\x35\x00', # arrow left
+        ',': b'\x36\x00',
+        '.': b'\x37\x00',
+        '/': b'\x38\x00',
+        '[': b'\x2f\x20', # with shift
+        ']': b'\x30\x20', # with shift
+        '<': b'\x36\x20', # with shift
+        '>': b'\x37\x20', # with shift
+        '?': b'\x38\x20', # with shift
+        '+': b'\x57\x00', # keypad +
+        '-': b'\x56\x00', # keypad -
+    },
 }
+
+DEFAULT_KEYMAP = 'thec64-mini-uk'
 
 # Initialize HID device, based on instructions at https://www.isticktoit.net/?p=1383
 def initialize_hid_device():
@@ -182,9 +294,9 @@ def initialize_hid_device():
     files = os.listdir(SYS_UDC_PATH)
     with open('%s/UDC' % (SYS_DEVICE_PATH), 'wb') as f: f.write(b'%s\n' % (bytes(' '.join(files), 'utf8')))
 
-def send_hid_key_down(key):
+def send_hid_key_down(key, keymap):
     try:
-        (scancode, modifier) = KEY_SCAN_CODES[key]
+        (scancode, modifier) = KEY_SCAN_CODES[keymap][key]
     except KeyError:
         print('Skip unknown scancode for %s' % key)
         return (-1, -1)
@@ -196,14 +308,14 @@ def send_hid_key_up():
     with open(DEV_HID_PATH, 'wb') as f: f.write(b'\x00\x00\x00\x00\x00\x00\x00\x00')
 
 # Send specified keypresses, with each key held down for downtime seconds, with interval seconds between keypresses
-def send_hid_keypresses(text, downtime_ms, interval_ms):
+def send_hid_keypresses(text, downtime_ms, interval_ms, keymap):
     downtime_s = float(downtime_ms) / 1000
     interval_s = float(interval_ms) / 1000
     scancodes = []
     for index, key in enumerate(text):
         if index > 0:
             time.sleep(interval_s)
-        scancode = send_hid_key_down(key)
+        scancode = send_hid_key_down(key, keymap)
         scancodes.append(scancode)
         time.sleep(downtime_s)
         send_hid_key_up()
@@ -235,7 +347,8 @@ class HIDGatewayRequestHandler(BaseHTTPRequestHandler):
         key = ''.join(query.get('key', []))
         downtime_ms = int(''.join(query.get('downtime', [str(DEFAULT_KEY_DOWNTIME_MS)])))
         interval_ms = int(''.join(query.get('interval', [str(DEFAULT_KEY_INTERVAL_MS)])))
-        scancodes = send_hid_keypresses(key, downtime_ms, interval_ms)
+        keymap = ''.join(query.get('keymap', [])) or DEFAULT_KEYMAP
+        scancodes = send_hid_keypresses(key, downtime_ms, interval_ms, keymap)
         return json.dumps({
             'scancodes': scancodes,
         }) + '\n'
@@ -249,7 +362,8 @@ class HIDGatewayRequestHandler(BaseHTTPRequestHandler):
             text += '\n'
         downtime_ms = int(''.join(query.get('downtime', [str(DEFAULT_KEY_DOWNTIME_MS)])))
         interval_ms = int(''.join(query.get('interval', [str(DEFAULT_KEY_INTERVAL_MS)])))
-        scancodes = send_hid_keypresses(text, downtime_ms, interval_ms)
+        keymap = ''.join(query.get('keymap', [])) or DEFAULT_KEYMAP
+        scancodes = send_hid_keypresses(text, downtime_ms, interval_ms, keymap)
         return json.dumps({
             'scancodes': scancodes,
         }) + '\n'
